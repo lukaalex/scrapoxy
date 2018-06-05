@@ -85,6 +85,9 @@ function getProvidersByType() {
                     SecurityGroups: [
                         process.env.PROVIDERS_AWSEC2_INSTANCE_SECURITYGROUPS || 'forward-proxy',
                     ],
+                    SubnetIds: [
+                        process.env.PROVIDERS_AWSEC2_INSTANCE_SUBNETIDS
+                    ]
                 },
                 tag: process.env.PROVIDERS_AWSEC2_TAG || 'Proxy',
                 max,
