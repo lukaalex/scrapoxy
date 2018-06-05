@@ -73,25 +73,42 @@ function getProvidersByType() {
             if (process.env.PROVIDERS_AWSEC2_MAX) {
                 max = parseInt(process.env.PROVIDERS_AWSEC2_MAX);
             }
-
-            return [{
-                type: 'awsec2',
-                accessKeyId: process.env.PROVIDERS_AWSEC2_ACCESSKEYID,
-                secretAccessKey: process.env.PROVIDERS_AWSEC2_SECRETACCESSKEY,
-                region: process.env.PROVIDERS_AWSEC2_REGION || 'eu-west-1',
-                instance: {
-                    InstanceType: process.env.PROVIDERS_AWSEC2_INSTANCE_INSTANCETYPE || 't1.micro',
-                    ImageId: process.env.PROVIDERS_AWSEC2_INSTANCE_IMAGEID || 'ami-c74d0db4',
-                    SecurityGroups: [
-                        process.env.PROVIDERS_AWSEC2_INSTANCE_SECURITYGROUPS || 'forward-proxy',
-                    ],
-                    SubnetIds: [
-                        process.env.PROVIDERS_AWSEC2_INSTANCE_SUBNETIDS
-                    ]
-                },
-                tag: process.env.PROVIDERS_AWSEC2_TAG || 'Proxy',
-                max,
-            }];
+            
+            let vpc;
+            if (process.env.PROVIDERS_AWSEC2_INSTANCE_SUBNETID) {
+                return [{
+                    type: 'awsec2',
+                    accessKeyId: process.env.PROVIDERS_AWSEC2_ACCESSKEYID,
+                    secretAccessKey: process.env.PROVIDERS_AWSEC2_SECRETACCESSKEY,
+                    region: process.env.PROVIDERS_AWSEC2_REGION || 'eu-west-1',
+                    instance: {
+                        InstanceType: process.env.PROVIDERS_AWSEC2_INSTANCE_INSTANCETYPE || 't1.micro',
+                        ImageId: process.env.PROVIDERS_AWSEC2_INSTANCE_IMAGEID || 'ami-c74d0db4',
+                        SecurityGroups: [
+                            process.env.PROVIDERS_AWSEC2_INSTANCE_SECURITYGROUPS || 'forward-proxy',
+                        ],
+                        SubnetId: process.env.PROVIDERS_AWSEC2_INSTANCE_SUBNETID || 'sg-XXexampleXX'
+                    },
+                    tag: process.env.PROVIDERS_AWSEC2_TAG || 'Proxy',
+                    max,
+                }];
+            } else {
+                return [{
+                    type: 'awsec2',
+                    accessKeyId: process.env.PROVIDERS_AWSEC2_ACCESSKEYID,
+                    secretAccessKey: process.env.PROVIDERS_AWSEC2_SECRETACCESSKEY,
+                    region: process.env.PROVIDERS_AWSEC2_REGION || 'eu-west-1',
+                    instance: {
+                        InstanceType: process.env.PROVIDERS_AWSEC2_INSTANCE_INSTANCETYPE || 't1.micro',
+                        ImageId: process.env.PROVIDERS_AWSEC2_INSTANCE_IMAGEID || 'ami-c74d0db4',
+                        SecurityGroups: [
+                            process.env.PROVIDERS_AWSEC2_INSTANCE_SECURITYGROUPS || 'forward-proxy',
+                        ]
+                    },
+                    tag: process.env.PROVIDERS_AWSEC2_TAG || 'Proxy',
+                    max,
+                }];
+            }
         }
 
         case 'digitalocean': {
