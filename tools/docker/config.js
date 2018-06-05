@@ -74,7 +74,6 @@ function getProvidersByType() {
                 max = parseInt(process.env.PROVIDERS_AWSEC2_MAX);
             }
             
-            let vpc;
             if (process.env.PROVIDERS_AWSEC2_INSTANCE_SUBNETID) {
                 return [{
                     type: 'awsec2',
